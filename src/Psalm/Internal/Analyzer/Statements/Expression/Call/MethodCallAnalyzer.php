@@ -754,7 +754,7 @@ class MethodCallAnalyzer extends \Psalm\Internal\Analyzer\Statements\Expression\
                 }
 
                 if (!$args && $var_id) {
-                    if ($config->memoize_method_calls) {
+                    if (MethodAnalyzer::isMethodResultMemoizable($codebase, $method_id)) {
                         $method_var_id = $var_id . '->' . $method_name_lc . '()';
 
                         if (isset($context->vars_in_scope[$method_var_id])) {

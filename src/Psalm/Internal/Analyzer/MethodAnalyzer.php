@@ -109,6 +109,43 @@ class MethodAnalyzer extends FunctionLikeAnalyzer
     }
 
     /**
+     * Determines whether a given method is static or not
+     *
+     * @param  string          $method_id
+     * @param  bool            $self_call
+     * @param  bool            $is_context_dynamic
+     * @param  CodeLocation    $code_location
+     * @param  array<string>   $suppressed_issues
+     * @param  bool            $is_dynamic_this_method
+     *
+     * @return bool
+     */
+    public static function isMethodResultMemoizable(
+        Codebase $codebase,
+        string $method_id
+    ) {
+        if ($codebase->config->memoize_method_calls) {
+            return true;
+        }
+
+        if (!$codebase->config->remember_property_assignments_after_call) {
+            return false;
+        }
+
+        $codebase_methods = $codebase->methods;
+
+        $method_id = $codebase_methods->getDeclaringMethodId($method_id);
+
+        if (!$method_id) {
+            return false;
+        }
+
+        $storage = $codebase_methods->getStorage($method_id);
+
+        return $storage->property_fetch;
+    }
+
+    /**
      * @param  string       $method_id
      * @param  CodeLocation $code_location
      * @param  array        $suppressed_issues

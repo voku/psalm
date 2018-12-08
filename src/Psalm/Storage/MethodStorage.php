@@ -44,4 +44,12 @@ class MethodStorage extends FunctionLikeStorage
      * @var bool
      */
     public $overridden_somewhere = false;
+
+    /**
+     * Whether or not the method returns the result of a property fetch without
+     * doing anything else
+     *
+     * @var boolean
+     */
+    public $property_fetch = false;
 }
